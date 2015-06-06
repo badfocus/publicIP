@@ -113,8 +113,6 @@ class PublicIP:
 
 def Main():
 	
-	myIP = PublicIP()
-
 	parser = argparse.ArgumentParser(description='%(prog)s: Simple utility to display public ip address')
 	parser.add_argument('-I', "--ip",action='store_true',dest='ip',help="Display Public IP address")
 	parser.add_argument("-i", "--isp",action='store_true',dest='isp',help="Display ISP name")
@@ -130,6 +128,7 @@ def Main():
 	args = parser.parse_args()
 
 	if args.ip or args.isp or args.state or args.city or args.proxy or args.all:
+		myIP = PublicIP()
 		if args.clear:
 			os.system('clear')
 		if args.ip:
