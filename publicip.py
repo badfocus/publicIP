@@ -5,14 +5,15 @@
 __author__      = "Oliver Vivell"
 __copyright__   = "Copyright 2015"
 __license__ 	= "MIT"
-__version__ 	= "1.0"
-__maintainer__ 	= "Oliver Vivell"
+__version__ 	= "1.0.1"
 __email__ 		= "oliver@badfoc.us"
 __status__ 		= "Production"
 
 import sys, re, os
 from bs4 import BeautifulSoup
 import urllib2  
+import argparse
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -27,7 +28,6 @@ class PublicIP:
 	refreshed = 0
 
 	def __init__(self):
-
 		self.response = self.requestPage()
 		self.ip = self.requestIP()
 		self.city = ""
@@ -64,33 +64,49 @@ class PublicIP:
 		self.ip = urllib2.urlopen('http://ip.42.pl/raw').read()
 		return self.ip
 
-	def showIP(self):
-		print "[%s+%s] Public IP: %s %s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.WARNING, self.ip, bcolors.ENDC)
-	
-	def showISP(self):
-		print "[%s+%s] ISP: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.isp, bcolors.ENDC)
+	def showIP(self, verbose):
+		if verbose:
+			print "[%s+%s] Public IP: %s %s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.WARNING, self.ip, bcolors.ENDC)
+		else:
+			print self.ip 
 
-	def showCity(self):
-		print "[%s+%s] City: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.city, bcolors.ENDC)
+	def showISP(self, verbose):
+		if verbose:
+			print "[%s+%s] ISP: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.isp, bcolors.ENDC)
+		else:
+			print self.isp
 
-	def showState(self):
-		print "[%s+%s] State: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.state, bcolors.ENDC)
+	def showCity(self, verbose):
+		if verbose:
+			print "[%s+%s] City: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.city, bcolors.ENDC)
+		else:
+			print self.city
 
-	def showCountry(self):
-		print "[%s+%s] Country: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.country, bcolors.ENDC)
-	
-	def showProxy(self):
-		print "[%s+%s] Proxy: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.WARNING, self.proxy, bcolors.ENDC)
+	def showState(self, verbose):
+		if verbose:
+			print "[%s+%s] State: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.state, bcolors.ENDC)
+		else:
+			print self.state
 
+	def showCountry(self, verbose):
+		if verbose:
+			print "[%s+%s] Country: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.OKBLUE, self.country, bcolors.ENDC)
+		else:
+			print self.country
 
-	def displayAll(self):
-		self.showIP()
-		self.showISP()
-		self.showCity()
-		self.showState()
-		self.showCountry()
-		self.showProxy()
-		
+	def showProxy(self, verbose):
+		if verbose:
+			print "[%s+%s] Proxy: %s \t%s %s" % (bcolors.OKGREEN, bcolors.ENDC,bcolors.WARNING, self.proxy, bcolors.ENDC)
+		else: 
+			print self.proxy
+
+	def displayAll(self, verbose):
+		self.showIP(verbose)
+		self.showISP(verbose)
+		self.showCity(verbose)
+		self.showState(verbose)
+		self.showCountry(verbose)
+		self.showProxy(verbose)
 
 	def refresh(self):
 		return 5
@@ -98,7 +114,33 @@ class PublicIP:
 def Main():
 	os.system('clear')
 	myIP = PublicIP()
-	myIP.displayAll()
+
+	parser = argparse.ArgumentParser(description='Simple utility to display public ip address')
+	parser.add_argument('-I', "--ip",action='store_true',dest='ip',help="Display Public IP address")
+	parser.add_argument("-i", "--isp",action='store_true',dest='isp',help="Display ISP name")
+	parser.add_argument("-s", "--state",action='store_true',dest='state',help="Display ISP State")
+	parser.add_argument("-c", "--city",action='store_true',dest='city',help="Display ISP City")
+	parser.add_argument("-C", "--country",action='store_true',dest='country',help="Display ISP Country")
+	parser.add_argument("-p", "--proxy",action='store_true',dest='proxy',help="Display Proxy")
+	parser.add_argument("-a", "--all",action='store_true',dest='all',help="Display all information")
+	parser.add_argument("-v", "--verbose",action='store_true',dest='verbose',help="Display verbose information")
+	args = parser.parse_args()
+
+
+	if args.ip:
+		myIP.showIP(args.verbose)
+	if args.isp:
+		myIP.showISP(args.verbose)
+	if args.state:
+		myIP.showState(args.verbose)
+	if args.city:
+		myIP.showCity(args.verbose)
+	if args.country:
+		myIP.showCountry(args.verbose)
+	if args.proxy:
+		myIP.showProxy(args.verbose)
+	if args.all:
+		myIP.displayAll(args.verbose)
 
 if __name__ == "__main__":
 	Main()
