@@ -5,11 +5,11 @@
 __author__      = "Oliver Vivell"
 __copyright__   = "Copyright 2015"
 __license__ 	= "MIT"
-__version__ 	= "1.0.1"
-__email__ 		= "oliver@badfoc.us"
-__status__ 		= "Production"
+__version__ 	= "1.0.2"
+__email__ 	= "oliver@badfoc.us"
+__status__ 	= "Production"
 
-import sys, re, os
+import sys, os
 from bs4 import BeautifulSoup
 import urllib2  
 import argparse
@@ -112,10 +112,10 @@ class PublicIP:
 		return 5
 
 def Main():
-	os.system('clear')
+	
 	myIP = PublicIP()
 
-	parser = argparse.ArgumentParser(description='Simple utility to display public ip address')
+	parser = argparse.ArgumentParser(description='%(prog)s: Simple utility to display public ip address')
 	parser.add_argument('-I', "--ip",action='store_true',dest='ip',help="Display Public IP address")
 	parser.add_argument("-i", "--isp",action='store_true',dest='isp',help="Display ISP name")
 	parser.add_argument("-s", "--state",action='store_true',dest='state',help="Display ISP State")
@@ -124,23 +124,32 @@ def Main():
 	parser.add_argument("-p", "--proxy",action='store_true',dest='proxy',help="Display Proxy")
 	parser.add_argument("-a", "--all",action='store_true',dest='all',help="Display all information")
 	parser.add_argument("-v", "--verbose",action='store_true',dest='verbose',help="Display verbose information")
+	parser.add_argument("-b", "--clear",action='store_true',dest='clear',help="Clear screen before displaying information")
+	parser.add_argument('--version', action='version', version='%(prog)s Version ' + __version__)
+
 	args = parser.parse_args()
 
+	if args.ip or args.isp or args.state or args.city or args.proxy or args.all:
+		if args.clear:
+			os.system('clear')
+		if args.ip:
+			myIP.showIP(args.verbose)
+		if args.isp:
+			myIP.showISP(args.verbose)
+		if args.state:
+			myIP.showState(args.verbose)
+		if args.city:
+			myIP.showCity(args.verbose)
+		if args.country:
+			myIP.showCountry(args.verbose)
+		if args.proxy:
+			myIP.showProxy(args.verbose)
+		if args.all:
+			myIP.displayAll(args.verbose)
+	else:
+		print bcolors.FAIL + "Error: " + bcolors.ENDC + "Please provide one of the folloing arguments"
+		parser.print_help()		
 
-	if args.ip:
-		myIP.showIP(args.verbose)
-	if args.isp:
-		myIP.showISP(args.verbose)
-	if args.state:
-		myIP.showState(args.verbose)
-	if args.city:
-		myIP.showCity(args.verbose)
-	if args.country:
-		myIP.showCountry(args.verbose)
-	if args.proxy:
-		myIP.showProxy(args.verbose)
-	if args.all:
-		myIP.displayAll(args.verbose)
 
 if __name__ == "__main__":
 	Main()
