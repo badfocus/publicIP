@@ -130,7 +130,7 @@ def Main():
 	if args.ip or args.isp or args.state or args.city or args.proxy or args.country or args.all:
 		myIP = PublicIP()
 		if args.clear:
-			os.system('clear')
+			os.system('cls' if os.name == 'nt' else 'clear')
 		if args.ip:
 			myIP.showIP(args.verbose)
 		if args.isp:
