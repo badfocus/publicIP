@@ -3,7 +3,7 @@
 """publicip.py: A simple Public IP Display Tool"""
 
 __author__      = "Oliver Vivell"
-__copyright__   = "Copyright 2015"
+__copyright__   = "(c) June, 2015"
 __license__ 	= "MIT"
 __version__ 	= "1.0.2"
 __email__ 	= "oliver@badfoc.us"
