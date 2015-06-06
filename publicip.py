@@ -127,7 +127,7 @@ def Main():
 
 	args = parser.parse_args()
 
-	if args.ip or args.isp or args.state or args.city or args.proxy or args.all:
+	if args.ip or args.isp or args.state or args.city or args.proxy or args.country or args.all:
 		myIP = PublicIP()
 		if args.clear:
 			os.system('clear')
