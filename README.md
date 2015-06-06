@@ -1,7 +1,12 @@
 # publicIP
-This is a super simple command line tool to display the public IP address and some other supportive information on the commandline. For options run 
+This is a super simple command line tool to display the public IP address and some other supportive information on the commandline. 
+
+##Options
+
+These are the commandline parameters:
+
 ```bash
-publicip.py -h
+$ publicip.py -h
 
 Options:
   -h, --help     show this help message and exit
@@ -16,5 +21,5 @@ Options:
   -b, --clear    Clear screen before displaying information
   --version      show program's version number and exit
 ```
-
+#License
 Released under MIT License
